@@ -640,3 +640,11 @@ impl Drop for LlamaModel {
         unsafe { llama_cpp_sys_2::llama_free_model(self.model.as_mut_ptr()) }
     }
 }
+
+// lctr patch: raw pointer access for llama_model_n_embd_inp, used by lctr's embedding code. Valid while the model lives.
+impl LlamaModel {
+    /// The raw `llama_model` pointer.
+    pub fn raw_model_ptr(&self) -> *const llama_cpp_sys_2::llama_model {
+        self.model.as_ptr()
+    }
+}

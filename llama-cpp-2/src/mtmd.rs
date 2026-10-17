@@ -1038,3 +1038,11 @@ pub enum MtmdEvalError {
     #[error("Eval failed with code: {0}")]
     EvalFailure(i32),
 }
+
+// lctr patch: raw pointer access for mtmd_get_output_embd, which the wrapper does not expose, used by lctr's embedding code. Valid while the context lives.
+impl MtmdContext {
+    /// The raw `mtmd_context` pointer.
+    pub fn raw_mtmd_ptr(&mut self) -> *mut llama_cpp_sys_2::mtmd_context {
+        self.context.as_mut_ptr()
+    }
+}

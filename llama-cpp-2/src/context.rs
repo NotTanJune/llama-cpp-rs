@@ -460,3 +460,11 @@ mod tests {
     // This would be unsound, see `impl Send for LlamaContext`.
     static_assertions::assert_not_impl_any!(LlamaContext<'static>: Sync);
 }
+
+// lctr patch: raw pointer access for the extended batch API (mixed text and image batches), used by lctr's embedding code. Valid while the context lives.
+impl LlamaContext<'_> {
+    /// The raw `llama_context` pointer.
+    pub fn raw_context_ptr(&mut self) -> *mut llama_cpp_sys_2::llama_context {
+        self.context.as_mut_ptr()
+    }
+}

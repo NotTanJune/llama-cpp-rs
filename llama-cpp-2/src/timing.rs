@@ -37,6 +37,9 @@ impl LlamaTimings {
                 n_p_eval,
                 n_eval,
                 n_reused,
+                // lctr patch: llama.cpp 9cf967a04 added these two counters; this wrapper does not report them, so they are zero.
+                n_reallocs_same: 0,
+                n_reallocs_diff: 0,
             },
         }
     }
